@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:lottie/lottie.dart';
+import 'package:the_weather/core/error/exception.dart';
 import 'package:the_weather/core/error/failure.dart';
 import 'package:the_weather/core/utils/infinite_snack.dart';
 import 'package:the_weather/core/utils/message_to_failure_mapper.dart';
@@ -83,9 +84,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       context: context,
                       state: state,
                       text: mapMessgeToFailure(state.failure));
+                } else if (state.failure is CacheFailure) {
+                  showInfiniteSnack(
+                    context: context,
+                    state: state,
+                    text: mapMessgeToFailure(state.failure),
+                  );
                 }
               }
-              //TODO: show cached data when server failure or no internet happened
             }
           },
         ),

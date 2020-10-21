@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:the_weather/core/error/exception.dart';
 import 'package:the_weather/core/utils/constants.dart';
-import 'package:the_weather/features/weather/data/models/weather_entity_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:the_weather/features/weather/data/remote_models/weather_entity_model.dart';
 
 abstract class WeatherRemoteDataSource {
   Future<WeatherEntityModel> getWeatherInfoByNaming(String cityName);

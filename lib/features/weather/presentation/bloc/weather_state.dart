@@ -24,7 +24,7 @@ class Error extends WeatherState {
 }
 
 class Loaded extends WeatherState {
-  final WeatherEntity weatherEntity;
+  final WeatherEntityData weatherEntity;
 
   Loaded(this.weatherEntity);
 

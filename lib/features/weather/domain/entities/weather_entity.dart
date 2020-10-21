@@ -8,9 +8,9 @@ import 'current.dart';
 import 'daily.dart';
 import 'hourly.dart';
 
-part 'weather_entity.g.dart';
+// part 'weather_entity.g.dart';
 
-@JsonSerializable(explicitToJson: true, nullable: false)
+// @JsonSerializable(explicitToJson: true, nullable: false)
 // @DataClassName('WeatherD')
 class WeatherEntity extends Equatable {
   // IntColumn get id => integer().autoIncrement()();
@@ -45,10 +45,10 @@ class WeatherEntity extends Equatable {
   List<Object> get props =>
       [id, lat, lon, timezone, timezoneOffset, current, hourly, daily];
 
-  factory WeatherEntity.fromJson(Map<String, dynamic> json) =>
-      _$WeatherEntityFromJson(json);
+  // factory WeatherEntity.fromJson(Map<String, dynamic> json) =>
+      // _$WeatherEntityFromJson(json);
 
-  Map<String, dynamic> toJson() => _$WeatherEntityToJson(this);
+  // Map<String, dynamic> toJson() => _$WeatherEntityToJson(this);
 }
 
 // class WeatherEntityConverter extends TypeConverter<WeatherEntity, String> {

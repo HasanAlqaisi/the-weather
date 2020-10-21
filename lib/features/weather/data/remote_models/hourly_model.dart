@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:the_weather/features/weather/data/models/weather_model.dart';
+import 'package:the_weather/features/weather/data/remote_models/weather_model.dart';
 import 'package:the_weather/features/weather/domain/entities/hourly.dart';
 import 'package:json_annotation/json_annotation.dart';
 

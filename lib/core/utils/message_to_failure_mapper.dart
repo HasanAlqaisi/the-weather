@@ -5,7 +5,7 @@ String mapMessgeToFailure(Failure failure) {
     case ServerFailure:
       return 'Server side error';
     case CacheFailure:
-      return 'Cache error';
+      return 'No data available, check your internet!';
     case PermissionSetUpNotDone:
       return 'Permission error, tell the dev.';
     case PermissionInProgressFailure:

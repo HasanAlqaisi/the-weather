@@ -12,8 +12,8 @@ void showInfiniteSnack(
       content: Text(text),
       duration: Duration(days: 365),
       action: SnackBarAction(
-        label: actionLable,
-        onPressed: onPressed,
+        label: actionLable ?? '',
+        onPressed: onPressed ?? (){},
       ),
     ),
   );

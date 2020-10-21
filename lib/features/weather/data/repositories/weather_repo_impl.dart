@@ -5,6 +5,7 @@ import 'package:the_weather/core/platform/location_info.dart';
 import 'package:the_weather/core/network/network_info.dart';
 import 'package:the_weather/features/weather/data/datasources/weather_local_data_source.dart';
 import 'package:the_weather/features/weather/data/datasources/weather_remote_data_source.dart';
+import 'package:the_weather/features/weather/data/db_models/weather_entity_local.dart';
 import 'package:the_weather/features/weather/domain/entities/weather_entity.dart';
 import 'package:the_weather/core/error/failure.dart';
 import 'package:dartz/dartz.dart';
@@ -24,28 +25,36 @@ class WeatherRepoImpl implements WeatherRepo {
   });
 
   @override
-  Future<Either<Failure, WeatherEntity>> getWeatherByCityName(
+  Future<Either<Failure, WeatherEntityData>> getWeatherByCityName(
       {String cityName}) async {
     if (await networkInfo.isConnected) {
       try {
-        final result = await remoteDataSource.getWeatherInfoByNaming(cityName);
-        // localDataSource.cacheWeatherState(result);
-        return Right(result);
+        final weatherRemote =
+            await remoteDataSource.getWeatherInfoByNaming(cityName);
+
+        localDataSource.cacheWeatherState(
+            WeatherEntityLocal.fromWeatherEntityModel(weatherRemote));
+
+        final weatherLocal = await localDataSource.getLastWeatherState();
+
+        return Right(weatherLocal);
       } on ServerException {
         return Left(ServerFailure());
+      } on CacheException {
+        return Left(CacheFailure());
       }
-      // } else {
-      // try {
-      // final result = await localDataSource.getLastWeatherState();
-      // return Right(result);
-      // } on CacheException {
-      // return Left(CacheFailure());
-      // }
+    } else {
+      try {
+        final result = await localDataSource.getLastWeatherState();
+        return Right(result);
+      } on CacheException {
+        return Left(CacheFailure());
+      }
     }
   }
 
   @override
-  Future<Either<Failure, WeatherEntity>> getWeatherByCoordinates() async {
+  Future<Either<Failure, WeatherEntityData>> getWeatherByCoordinates() async {
     if (await networkInfo.isConnected) {
       if (await locationInfo.isServiceEnabled) {
         final permissionState = await locationInfo.permissionState;
@@ -60,11 +69,17 @@ class WeatherRepoImpl implements WeatherRepo {
                 return Left(failure);
               }, (position) async {
                 try {
-                  final result =
+                  final weatherRemote =
                       await remoteDataSource.getWeatherInfoByCoordinates(
                           position.latitude, position.longitude);
-                  // localDataSource.cacheWeatherState(result);
-                  return Right(result);
+
+                  await localDataSource.cacheWeatherState(
+                      WeatherEntityLocal.fromWeatherEntityModel(weatherRemote));
+
+                  final weatherLocal =
+                      await localDataSource.getLastWeatherState();
+
+                  return Right(weatherLocal);
                 } on ServerException {
                   return Left(ServerFailure());
                 }
@@ -80,17 +95,16 @@ class WeatherRepoImpl implements WeatherRepo {
       } else {
         return Left(LocationServiceOffFailure());
       }
-      // } else {
-      //   try {
-      //     final result = await localDataSource.getLastWeatherState();
-      //     return Right(result);
-      //   } on CacheException {
-      //     return Left(CacheFailure());
-      //   }
-      // }
     } else {
-      //TODO: Paste the code above below when you implement cache stategy
-      return Left(NoInternetFailure());
+      try {
+        final result =
+            await localDataSource.getLastWeatherState() ?? CacheException();
+        if (result is CacheException) throw CacheException();
+
+        return Right(result);
+      } on CacheException {
+        return Left(CacheFailure());
+      }
     }
   }
 }

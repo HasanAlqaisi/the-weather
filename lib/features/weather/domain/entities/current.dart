@@ -6,9 +6,9 @@ import 'package:moor_flutter/moor_flutter.dart';
 
 import 'weather.dart';
 
-part 'current.g.dart';
+// part 'current.g.dart';
 
-@JsonSerializable(explicitToJson: true, nullable: false)
+// @JsonSerializable(explicitToJson: true, nullable: false)
 class Current extends Equatable {
   final int dt;
   final int sunrise;
@@ -59,26 +59,26 @@ class Current extends Equatable {
         weather
       ];
 
-  factory Current.fromJson(Map<String, dynamic> json) =>
-      _$CurrentFromJson(json);
+  // factory Current.fromJson(Map<String, dynamic> json) =>
+  //     _$CurrentFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CurrentToJson(this);
+  // Map<String, dynamic> toJson() => _$CurrentToJson(this);
 }
 
-class CurrentConverter extends TypeConverter<Current, String> {
-  @override
-  Current mapToDart(String fromDb) {
-    if (fromDb == null) {
-      return null;
-    }
-    return Current.fromJson(json.decode(fromDb) as Map<String, dynamic>);
-  }
+// class CurrentConverter extends TypeConverter<Current, String> {
+//   @override
+//   Current mapToDart(String fromDb) {
+//     if (fromDb == null) {
+//       return null;
+//     }
+//     return Current.fromJson(json.decode(fromDb) as Map<String, dynamic>);
+//   }
 
-  @override
-  String mapToSql(Current value) {
-    if (value == null) {
-      return null;
-    }
-    return json.encode(value.toJson());
-  }
-}
+//   @override
+//   String mapToSql(Current value) {
+//     if (value == null) {
+//       return null;
+//     }
+//     return json.encode(value.toJson());
+//   }
+// }

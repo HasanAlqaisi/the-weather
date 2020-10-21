@@ -6,9 +6,9 @@ import 'package:moor_flutter/moor_flutter.dart';
 
 import 'weather.dart';
 
-part 'hourly.g.dart';
+// part 'hourly.g.dart';
 
-@JsonSerializable(explicitToJson: true, nullable: false)
+// @JsonSerializable(explicitToJson: true, nullable: false)
 class Hourly extends Equatable {
   final int dt;
   final double temp;
@@ -53,26 +53,26 @@ class Hourly extends Equatable {
         pop
       ];
 
-  factory Hourly.fromJson(Map<String, dynamic> json) => _$HourlyFromJson(json);
+  // factory Hourly.fromJson(Map<String, dynamic> json) => _$HourlyFromJson(json);
 
-  Map<String, dynamic> toJson() => _$HourlyToJson(this);
+  // Map<String, dynamic> toJson() => _$HourlyToJson(this);
 }
 
-class HourlyConverter extends TypeConverter<List<Hourly>, String> {
-  @override
-  List<Hourly> mapToDart(String fromDb) {
-    if (fromDb == null) {
-      return null;
-    }
-    final hourly = json.decode(fromDb) as Map<String, dynamic>;
-    return (hourly as List).map((i) => Hourly.fromJson(i)).toList();
-  }
+// class HourlyConverter extends TypeConverter<List<Hourly>, String> {
+//   @override
+//   List<Hourly> mapToDart(String fromDb) {
+//     if (fromDb == null) {
+//       return null;
+//     }
+//     final hourly = json.decode(fromDb) as Map<String, dynamic>;
+//     return (hourly as List).map((i) => Hourly.fromJson(i)).toList();
+//   }
 
-  @override
-  String mapToSql(List<Hourly> value) {
-    if (value == null) {
-      return null;
-    }
-    return json.encode(value.map((hourly) => hourly.toJson()).toList());
-  }
-}
+//   @override
+//   String mapToSql(List<Hourly> value) {
+//     if (value == null) {
+//       return null;
+//     }
+//     return json.encode(value.map((hourly) => hourly.toJson()).toList());
+//   }
+// }

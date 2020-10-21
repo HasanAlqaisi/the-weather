@@ -8,9 +8,9 @@ import 'package:the_weather/features/weather/domain/entities/feels_like.dart';
 import 'temp.dart';
 import 'weather.dart';
 
-part 'daily.g.dart';
+// part 'daily.g.dart';
 
-@JsonSerializable(explicitToJson: true, nullable: false)
+// @JsonSerializable(explicitToJson: true, nullable: false)
 class Daily extends Equatable {
   final int dt;
   final int sunrise;
@@ -64,27 +64,27 @@ class Daily extends Equatable {
         rain
       ];
 
-  factory Daily.fromJson(Map<String, dynamic> json) => _$DailyFromJson(json);
+  // factory Daily.fromJson(Map<String, dynamic> json) => _$DailyFromJson(json);
 
-  Map<String, dynamic> toJson() => _$DailyToJson(this);
+  // Map<String, dynamic> toJson() => _$DailyToJson(this);
 }
 
-class DailyConverter extends TypeConverter<List<Daily>, String> {
-  @override
-  List<Daily> mapToDart(String fromDb) {
-    if (fromDb == null) {
-      return null;
-    }
-    final daily = json.decode(fromDb) as Map<String, dynamic>;
+// class DailyConverter extends TypeConverter<List<Daily>, String> {
+//   @override
+//   List<Daily> mapToDart(String fromDb) {
+//     if (fromDb == null) {
+//       return null;
+//     }
+//     final daily = json.decode(fromDb) as Map<String, dynamic>;
 
-    return (daily as List).map((i) => Daily.fromJson(i)).toList();
-  }
+//     return (daily as List).map((i) => Daily.fromJson(i)).toList();
+//   }
 
-  @override
-  String mapToSql(List<Daily> value) {
-    if (value == null) {
-      return null;
-    }
-    return json.encode(value.map((daily) => daily.toJson()).toList());
-  }
-}
+//   @override
+//   String mapToSql(List<Daily> value) {
+//     if (value == null) {
+//       return null;
+//     }
+//     return json.encode(value.map((daily) => daily.toJson()).toList());
+//   }
+// }
