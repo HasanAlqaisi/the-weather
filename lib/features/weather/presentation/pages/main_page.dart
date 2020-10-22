@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:the_weather/core/responsivness/size_config.dart';
 import 'package:the_weather/core/utils/constants.dart';
 import 'package:the_weather/core/utils/unit_time_to_day.dart';
 import 'package:the_weather/core/utils/unix_time_to_hour.dart';
@@ -24,7 +25,9 @@ class MainPage extends StatelessWidget {
         //   Icons.menu,
         //   color: Colors.white,
         // ),
-        title: Text(date, style: kBrightTextStyle),
+        title: Text(date,
+            style: kBrightTextStyle.copyWith(
+                fontSize: 1.89 * SizeConfig.textMultiplier)),
         centerTitle: true,
         // actions: [
         //   Icon(Icons.location_on),
@@ -43,10 +46,12 @@ class MainPage extends StatelessWidget {
         child: ListView(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 40.0),
+              padding: EdgeInsets.symmetric(
+                  vertical: 5.0 * SizeConfig.heightMultiplier),
               child: Text(
-                weatherData.timezone,
-                style: kBrightTextStyle,
+                weatherData.timezone.split('/')[1],
+                style: kBrightTextStyle.copyWith(
+                    fontSize: 2.4 * SizeConfig.textMultiplier),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -56,49 +61,49 @@ class MainPage extends StatelessWidget {
                 Text(
                   '${weatherData.current.temp.toInt()}°',
                   style: TextStyle(
-                    fontSize: 50.0,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 6.4 * SizeConfig.textMultiplier,
+                    fontWeight: FontWeight.w400,
                     color: Colors.white,
                   ),
                 ),
                 Image(
                   image: NetworkImage(
                       'http://openweathermap.org/img/wn/${weatherData.current.weather[0].icon}@2x.png'),
-                  width: 80.0,
-                  height: 100.0,
+                  width: 19.46 * SizeConfig.imageSizeMultiplier,
+                  height: 24.33 * SizeConfig.imageSizeMultiplier,
                 ),
               ],
             ),
-            SizedBox(height: 20.0),
+            SizedBox(height: 2.53 * SizeConfig.heightMultiplier),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   Icons.keyboard_arrow_up,
                   color: Colors.red,
-                  size: 28.0,
+                  size: 6.8 * SizeConfig.imageSizeMultiplier,
                 ),
                 Text('${weatherData.daily.first.temp.max.toInt()}°',
                     style: kBrightTextStyle),
-                SizedBox(width: 10.0),
+                SizedBox(width: 2.43 * SizeConfig.widthMultiplier),
                 Icon(
                   Icons.keyboard_arrow_down,
                   color: Colors.green,
-                  size: 28.0,
+                  size: 6.8 * SizeConfig.imageSizeMultiplier,
                 ),
                 Text('${weatherData.daily.first.temp.min.toInt()}°',
                     style: kBrightTextStyle),
-                SizedBox(width: 18.0)
+                SizedBox(width: 4.38 * SizeConfig.widthMultiplier)
               ],
             ),
-            SizedBox(height: 40.0),
+            SizedBox(height: 5 * SizeConfig.heightMultiplier),
             // Text('Sunny', style: kDimTextStyle, textAlign: TextAlign.center),
             // SizedBox(height: 5.0),
             // Text('Feels like 29°', style: kDimTextStyle, textAlign: TextAlign.center),
             // SizedBox(height: 20.0),
-            Divider(thickness: 0.3, color: Colors.white),
+            Divider(thickness: 0.4, color: Colors.white),
             Container(
-              height: 100.0,
+              height: 12.65 * SizeConfig.heightMultiplier,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
@@ -107,29 +112,26 @@ class MainPage extends StatelessWidget {
                       hour: unixTimeToHours(unixTime),
                       temp: weatherData.hourly[index].temp);
                 },
-                itemCount: 24,
+                itemCount: 12,
               ),
             ),
-            Divider(thickness: 0.3, color: Colors.white),
-            SizedBox(height: 20.0),
-            Container(
-              height: 400,
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                itemBuilder: (context, index) {
-                  final unixTime = weatherData.daily[index].dt;
-                  return WeeklyTemp(
-                    day: unixTimeToDay(unixTime),
-                    humidity: weatherData.daily[index].humidity,
-                    maxTemp: weatherData.daily[index].temp.max.toInt(),
-                    minTemp: weatherData.daily[index].temp.min.toInt(),
-                    icon: weatherData.current.weather[0].icon,
-                  );
-                },
-                itemCount: weatherData.daily.length,
-              ),
+            Divider(thickness: 0.4, color: Colors.white),
+            SizedBox(height: 2.53 * SizeConfig.heightMultiplier),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context, index) {
+                final unixTime = weatherData.daily[index].dt;
+                return WeeklyTemp(
+                  day: unixTimeToDay(unixTime),
+                  humidity: weatherData.daily[index].humidity,
+                  maxTemp: weatherData.daily[index].temp.max.toInt(),
+                  minTemp: weatherData.daily[index].temp.min.toInt(),
+                  icon: weatherData.current.weather[0].icon,
+                );
+              },
+              itemCount: weatherData.daily.length,
             )
           ],
         ),
