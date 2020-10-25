@@ -67,7 +67,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       text: mapMessgeToFailure(state.failure),
                       actionLable: 'Settings',
                       onPressed: () async {
-                        if (await openAppSettings()) {
+                        if (await Geolocator.openAppSettings()) {
                           if (Navigator.canPop(context)) {
                             Navigator.pop(context);
                           } else {
@@ -82,7 +82,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       text: mapMessgeToFailure(state.failure),
                       actionLable: 'GPS',
                       onPressed: () async {
-                        if (await openLocationSettings()) {
+                        if (await Geolocator.openAppSettings()) {
                           if (Navigator.canPop(context)) {
                             Navigator.pop(context);
                           } else {

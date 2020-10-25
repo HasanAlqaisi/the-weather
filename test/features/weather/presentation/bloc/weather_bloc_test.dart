@@ -7,7 +7,7 @@ import 'package:mockito/mockito.dart';
 import 'package:the_weather/core/error/exception.dart';
 import 'package:the_weather/core/error/failure.dart';
 import 'package:the_weather/core/platform/location_info.dart';
-import 'package:the_weather/features/weather/data/models/weather_entity_model.dart';
+import 'package:the_weather/features/weather/data/remote_models/weather_entity_model.dart';
 import 'package:the_weather/features/weather/domain/entities/weather_entity.dart';
 import 'package:the_weather/features/weather/domain/usecases/get_weather_city.dart';
 import 'package:the_weather/features/weather/domain/usecases/get_weather_coordinates.dart';
@@ -48,8 +48,8 @@ void main() {
     final WeatherEntity weatherEntity = WeatherEntityModel.fromJson(
         json.decode(fixture('weather_response.json')));
     test('should get data from use case', () async {
-      when(mockGetWeatherByCoordinates())
-          .thenAnswer((_) async => Right(weatherEntity));
+      when(mockGetWeatherByCoordinates());
+          // .thenAnswer((_) async => Right(weatherEntity));
 
       weatherBloc.add(GetWeatherByCoordinatesEvent());
       await untilCalled(mockGetWeatherByCoordinates());
@@ -58,10 +58,10 @@ void main() {
     });
 
     test('should emit [Loading, Loaded] when data gotten successfuly', () {
-      when(mockGetWeatherByCoordinates())
-          .thenAnswer((_) async => Right(weatherEntity));
+      when(mockGetWeatherByCoordinates());
+          // .thenAnswer((_) async => Right(weatherEntity));
 
-      final expectedStates = [Loading(), Loaded(weatherEntity)];
+      final expectedStates = [Loading(), Loaded(throw UnimplementedError)];
       expectLater(
           weatherBloc.asBroadcastStream(), emitsInOrder(expectedStates));
       weatherBloc.asBroadcastStream().forEach((element) {
@@ -103,8 +103,8 @@ void main() {
     final WeatherEntity weatherEntity = WeatherEntityModel.fromJson(
         json.decode(fixture('weather_response.json')));
     test('should get data from use case', () async {
-      when(mockGetWeatherByCityName(cityName))
-          .thenAnswer((_) async => Right(weatherEntity));
+      when(mockGetWeatherByCityName(cityName));
+          // .thenAnswer((_) async => Right(weatherEntity));
 
       weatherBloc.add(GetWeatherByNamingEvent(cityName));
       await untilCalled(mockGetWeatherByCityName(any));
@@ -113,10 +113,10 @@ void main() {
     });
 
     test('should emit [Loading, Loaded] when data gotten successfuly', () {
-      when(mockGetWeatherByCityName(cityName))
-          .thenAnswer((_) async => Right(weatherEntity));
+      when(mockGetWeatherByCityName(cityName));
+          // .thenAnswer((_) async => Right(weatherEntity));
 
-      final expectedStates = [Loading(), Loaded(weatherEntity)];
+      final expectedStates = [Loading(), Loaded(throw UnimplementedError)];
       expectLater(
           weatherBloc.asBroadcastStream(), emitsInOrder(expectedStates));
       weatherBloc.asBroadcastStream().forEach((element) {

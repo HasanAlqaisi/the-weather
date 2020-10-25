@@ -19,8 +19,8 @@ void main() {
   final weatherEntity = WeatherEntity();
 
   test('Should get weather by city Name', () async {
-    when(mockWeatherRepo.getWeatherByCityName(cityName: 'Baghdad'))
-        .thenAnswer((_) async => Right(weatherEntity));
+    when(mockWeatherRepo.getWeatherByCityName(cityName: 'Baghdad'));
+        // .thenAnswer((_) async => Right(weatherEntity));
 
     final result = await useCase('Baghdad');
 

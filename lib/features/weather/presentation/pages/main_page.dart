@@ -1,5 +1,8 @@
+import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:the_weather/core/responsivness/size_config.dart';
 import 'package:the_weather/core/utils/constants.dart';
@@ -9,6 +12,7 @@ import 'package:the_weather/features/weather/presentation/bloc/weather_bloc.dart
 import 'package:the_weather/features/weather/presentation/widgets/hourly_temp.dart';
 import 'package:the_weather/features/weather/presentation/widgets/input_city_dialog.dart';
 import 'package:the_weather/features/weather/presentation/widgets/weekly_temp.dart';
+import 'package:the_weather/injection_container.dart' as di;
 
 class MainPage extends StatelessWidget {
   @override
@@ -29,18 +33,63 @@ class MainPage extends StatelessWidget {
             style: kBrightTextStyle.copyWith(
                 fontSize: 1.89 * SizeConfig.textMultiplier)),
         centerTitle: true,
-        // actions: [
-        //   Icon(Icons.location_on),
-        //   Padding(
-        //     padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-        //     child: GestureDetector(
-        //       child: Icon(Icons.add),
-        //       onTap: () {
-        //         showDialog(context: context, builder: (context) => InputCityDialog() );
-        //       },
-        //     ),
-        //   ),
-        // ],
+        actions: [
+          // Icon(Icons.location_on),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+            child: GestureDetector(
+              child: Icon(Icons.add),
+              onTap: () async {
+                print('clicked!');
+
+                /// This setup will get fired every 15 min
+                /// only if the app is visible or in the foreground
+
+                BackgroundFetch.configure(
+                    BackgroundFetchConfig(
+                      minimumFetchInterval: 15,
+                      enableHeadless: true,
+                      startOnBoot: true,
+                      stopOnTerminate: false,
+                    ), (String taskId) async {
+                  // This is the fetch-event callback.
+                  print("[BackgroundFetch] taskId: $taskId");
+
+                  // Use a switch statement to route task-handling.
+                  switch (taskId) {
+                    case 'com.hraa.weatherTask':
+                      print('Time: ${DateTime.now()}');
+                      await di.sl.isReady<FlutterLocalNotificationsPlugin>();
+                      await di.sl<FlutterLocalNotificationsPlugin>().show(
+                            1,
+                            'Hello',
+                            'I should appear every 15 min',
+                            di.sl<NotificationDetails>(),
+                          );
+                      // context
+                      //     .bloc<WeatherBloc>()
+                      //     .add(GetWeatherByCoordinatesEvent());
+                      break;
+                    default:
+                      print("Default fetch task");
+                  }
+                  // Finish, providing received taskId.
+                  BackgroundFetch.finish(taskId);
+                });
+
+                BackgroundFetch.scheduleTask(TaskConfig(
+                    taskId: "com.hraa.weatherTask",
+                    periodic: true,
+                    stopOnTerminate: false,
+                    enableHeadless: true,
+                    startOnBoot: true,
+                    delay: 900000 // <-- milliseconds
+                    ));
+                // showDialog(context: context, builder: (context) => InputCityDialog() );
+              },
+            ),
+          ),
+        ],
       ),
       body: SafeArea(
         child: ListView(

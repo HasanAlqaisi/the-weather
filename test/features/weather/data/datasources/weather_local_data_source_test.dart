@@ -5,8 +5,7 @@ import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:the_weather/features/weather/data/datasources/weather_local_data_source.dart';
-import 'package:the_weather/features/weather/data/models/weather_entity_model.dart';
-import 'package:the_weather/features/weather/domain/entities/db/weather_entity_table.dart';
+import 'package:the_weather/features/weather/data/db_models/weather_entity_local.dart';
 import 'package:the_weather/features/weather/domain/entities/weather_entity.dart';
 
 import '../../../../fixtures/fixture_reader.dart';
@@ -17,7 +16,7 @@ void main() {
   WeatherLocalDataSource weatherLocalDataSource;
 
   setUp(() {
-    mockDatabase = AppDataBase(VmDatabase.memory());
+    // mockDatabase = AppDataBase(VmDatabase.memory());
     mockWeatherDao = WeatherDao(mockDatabase);
     weatherLocalDataSource = WeatherLocalDataSourceImpl(dao: mockWeatherDao);
   });

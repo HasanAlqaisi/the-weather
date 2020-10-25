@@ -1,7 +1,9 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:the_weather/core/network/network_info.dart';
+import 'package:the_weather/core/notifications/notification_details.dart';
 import 'package:the_weather/core/platform/location_info.dart';
 import 'package:the_weather/features/weather/data/datasources/weather_local_data_source.dart';
 import 'package:the_weather/features/weather/data/datasources/weather_remote_data_source.dart';
@@ -60,4 +62,18 @@ void init() {
   sl.registerLazySingleton(() => http.Client());
   sl.registerLazySingleton(() => DataConnectionChecker());
   sl.registerLazySingleton(() => GeolocatorPlatform.instance);
+
+  // Local notifications
+  sl.registerLazySingleton(
+      () => AndroidInitializationSettings('weather_notif_icon'));
+
+  sl.registerLazySingleton(() => InitializationSettings(android: sl()));
+
+  sl.registerLazySingletonAsync(() async {
+    final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    await flutterLocalNotificationsPlugin.initialize(sl());
+    return flutterLocalNotificationsPlugin;
+  });
+
+  sl.registerLazySingleton(() => WeatherNotificationDetails.getNotificationDetails());
 }

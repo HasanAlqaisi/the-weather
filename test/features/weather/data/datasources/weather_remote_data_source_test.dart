@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:the_weather/core/error/exception.dart';
 import 'package:the_weather/core/utils/constants.dart';
 import 'package:the_weather/features/weather/data/datasources/weather_remote_data_source.dart';
-import 'package:the_weather/features/weather/data/models/weather_entity_model.dart';
+import 'package:the_weather/features/weather/data/remote_models/weather_entity_model.dart';
 
 import '../../../../fixtures/fixture_reader.dart';
 

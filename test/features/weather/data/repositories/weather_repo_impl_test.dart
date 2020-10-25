@@ -8,7 +8,7 @@ import 'package:the_weather/core/platform/location_info.dart';
 import 'package:the_weather/core/network/network_info.dart';
 import 'package:the_weather/features/weather/data/datasources/weather_local_data_source.dart';
 import 'package:the_weather/features/weather/data/datasources/weather_remote_data_source.dart';
-import 'package:the_weather/features/weather/data/models/weather_entity_model.dart';
+import 'package:the_weather/features/weather/data/remote_models/weather_entity_model.dart';
 import 'package:the_weather/features/weather/data/repositories/weather_repo_impl.dart';
 
 class MockRemoteDataSource extends Mock implements WeatherRemoteDataSource {}

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:moor_flutter/moor_flutter.dart';
 import 'package:the_weather/core/error/exception.dart';
 import 'package:the_weather/core/platform/location_info.dart';
 import 'package:the_weather/core/network/network_info.dart';
@@ -82,6 +83,8 @@ class WeatherRepoImpl implements WeatherRepo {
                   return Right(weatherLocal);
                 } on ServerException {
                   return Left(ServerFailure());
+                } on InvalidDataException {
+                  return Left(CacheFailure());
                 }
               });
               break;
